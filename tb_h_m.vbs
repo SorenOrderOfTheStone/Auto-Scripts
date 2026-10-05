@@ -27,27 +27,33 @@ End Sub
 ' Short pause to let system settle
 WScript.Sleep 2000
 
-' 1. Launch Script 2 (tb_s_m.bat) - Hidden
-batchCommand = chr(34) & scriptDir & "\tb_s_m.bat" & chr(34)
-SafeLaunch batchCommand, 0
+' 1. Launch Script 2 (tb_s_m.bat) - Hidden[cite: 3]
+batchCommand = chr(34) & scriptDir & "\tb_s_m.bat" & chr(34)[cite: 3]
+SafeLaunch batchCommand, 0[cite: 3]
 
 WScript.Sleep 2000
 
-' 2. Launch tb_AutoShutdown.ps1 - Hidden
-psCommand = "powershell.exe -ExecutionPolicy Bypass -File """ & scriptDir & "\tb_AutoShutdown.ps1"""
-SafeLaunch psCommand, 0
+' 2. Launch tb_AutoShutdown.ps1 - Hidden[cite: 3]
+psCommand = "powershell.exe -ExecutionPolicy Bypass -File """ & scriptDir & "\tb_AutoShutdown.ps1"""[cite: 3]
+SafeLaunch psCommand, 0[cite: 3]
 
 WScript.Sleep 1000
 
-' 3. Launch tb_FolderGuard.ps1 - Hidden
-guardCommand = "powershell.exe -ExecutionPolicy Bypass -File """ & scriptDir & "\tb_FolderGuard.ps1"""
-SafeLaunch guardCommand, 0
+' 3. Launch tb_FolderGuard.ps1 - Hidden[cite: 3]
+guardCommand = "powershell.exe -ExecutionPolicy Bypass -File """ & scriptDir & "\tb_FolderGuard.ps1"""[cite: 3]
+SafeLaunch guardCommand, 0[cite: 3]
 
 WScript.Sleep 1000
 
-' 4. Launch the Watchdog timer script (tb_Watchdog.bat) - Hidden
-watchdogCommand = chr(34) & scriptDir & "\tb_Watchdog.bat" & chr(34)
-SafeLaunch watchdogCommand, 0
+' 4. Launch the Watchdog timer script (tb_Watchdog.bat) - Hidden[cite: 3]
+watchdogCommand = chr(34) & scriptDir & "\tb_Watchdog.bat" & chr(34)[cite: 3]
+SafeLaunch watchdogCommand, 0[cite: 3]
+
+WScript.Sleep 1000
+
+' 5. Launch tb_manager.vbs - Hidden in the background
+managerCommand = "wscript.exe """ & scriptDir & "\tb_manager.vbs"""
+SafeLaunch managerCommand, 0
 
 Set FSO = Nothing
 Set WShell = Nothing
