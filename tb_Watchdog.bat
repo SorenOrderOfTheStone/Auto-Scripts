@@ -5,21 +5,19 @@ cd /d "%~dp0"
     timeout /t 15 /nobreak >nul
 
     :: ----------------------------------------------------
-    :: Check tb_FolderGuard.ps1
+    :: Check & Restart tb_FolderGuard.ps1
     :: ----------------------------------------------------
-    powershell -NoProfile -WindowStyle Hidden -Command ^
-        "$running = Get-CimInstance Win32_Process -Filter \"Name = 'powershell.exe'\" | Where-Object { $_.CommandLine -like '*tb_FolderGuard.ps1*' };"^
-        "if (-not $running) {"^
-        "    Start-Process powershell.exe -ArgumentList '-ExecutionPolicy Bypass -WindowStyle Hidden -File tb_FolderGuard.ps1' -WorkingDirectory '%~dp0';"^
-        "}"
+    powershell -NoProfile -Command "Get-CimInstance Win32_Process -Filter \"Name='powershell.exe'\" | Select-Object -ExpandProperty CommandLine" 2>nul | findstr /i "tb_FolderGuard.ps1" >nul
+    if errorlevel 1 (
+        start /min "" powershell.exe -ExecutionPolicy Bypass -WindowStyle Hidden -File "%~dp0tb_FolderGuard.ps1"
+    )
 
     :: ----------------------------------------------------
-    :: Check tb_AutoShutdown.ps1
+    :: Check & Restart tb_AutoShutdown.ps1
     :: ----------------------------------------------------
-    powershell -NoProfile -WindowStyle Hidden -Command ^
-        "$running = Get-CimInstance Win32_Process -Filter \"Name = 'powershell.exe'\" | Where-Object { $_.CommandLine -like '*tb_AutoShutdown.ps1*' };"^
-        "if (-not $running) {"^
-        "    Start-Process powershell.exe -ArgumentList '-ExecutionPolicy Bypass -WindowStyle Hidden -File tb_AutoShutdown.ps1' -WorkingDirectory '%~dp0';"^
-        "}"
+    powershell -NoProfile -Command "Get-CimInstance Win32_Process -Filter \"Name='powershell.exe'\" | Select-Object -ExpandProperty CommandLine" 2>nul | findstr /i "tb_AutoShutdown.ps1" >nul
+    if errorlevel 1 (
+        start /min "" powershell.exe -ExecutionPolicy Bypass -WindowStyle Hidden -File "%~dp0tb_AutoShutdown.ps1"
+    )
 
 goto loop
