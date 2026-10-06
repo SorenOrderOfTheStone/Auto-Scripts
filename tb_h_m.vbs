@@ -49,5 +49,11 @@ WScript.Sleep 1000
 watchdogCommand = chr(34) & scriptDir & "\tb_Watchdog.bat" & chr(34)
 SafeLaunch watchdogCommand, 0
 
+WScript.Sleep 1000
+
+' 5. Launch the Instance Guard script (tb_InstanceGuard.bat) - Hidden
+instanceGuardCommand = chr(34) & scriptDir & "\tb_InstanceGuard.bat" & chr(34)
+SafeLaunch instanceGuardCommand, 0
+
 Set FSO = Nothing
 Set WShell = Nothing
