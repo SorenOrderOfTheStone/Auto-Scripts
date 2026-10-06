@@ -8,8 +8,9 @@ timeout /t 15 /nobreak >nul
 :: Check & Restart tb_FolderGuard.ps1 via PID & Heartbeat
 :: ----------------------------------------------------
 powershell -NoProfile -Command ^
-    "$pidFile = Join-Path $PSScriptRoot 'guard.pid';"^
-    "$hbFile = Join-Path $PSScriptRoot 'guard_hb.tmp';"^
+    "$scriptDir = '%~dp0';"^
+    "$pidFile = Join-Path $scriptDir 'guard.pid';"^
+    "$hbFile = Join-Path $scriptDir 'guard_hb.tmp';"^
     "$restart = $false;"^
     "if (-not (Test-Path $pidFile)) { $restart = $true }"^
     "else {"^
@@ -21,15 +22,16 @@ powershell -NoProfile -Command ^
     "    if (((Get-Date) - (Get-Item $hbFile).LastWriteTime).TotalSeconds -gt 35) { $restart = $true }"^
     "}"^
     "if ($restart) {"^
-    "    Start-Process powershell.exe -ArgumentList '-ExecutionPolicy Bypass -WindowStyle Hidden -File tb_FolderGuard.ps1' -WorkingDirectory $PSScriptRoot;"^
+    "    Start-Process powershell.exe -ArgumentList '-ExecutionPolicy Bypass -WindowStyle Hidden -File tb_FolderGuard.ps1' -WorkingDirectory $scriptDir;"^
     "}"
 
 :: ----------------------------------------------------
 :: Check & Restart tb_AutoShutdown.ps1 via PID & Heartbeat
 :: ----------------------------------------------------
 powershell -NoProfile -Command ^
-    "$pidFile = Join-Path $PSScriptRoot 'shutdown.pid';"^
-    "$hbFile = Join-Path $PSScriptRoot 'shutdown_hb.tmp';"^
+    "$scriptDir = '%~dp0';"^
+    "$pidFile = Join-Path $scriptDir 'shutdown.pid';"^
+    "$hbFile = Join-Path $scriptDir 'shutdown_hb.tmp';"^
     "$restart = $false;"^
     "if (-not (Test-Path $pidFile)) { $restart = $true }"^
     "else {"^
@@ -41,7 +43,7 @@ powershell -NoProfile -Command ^
     "    if (((Get-Date) - (Get-Item $hbFile).LastWriteTime).TotalSeconds -gt 35) { $restart = $true }"^
     "}"^
     "if ($restart) {"^
-    "    Start-Process powershell.exe -ArgumentList '-ExecutionPolicy Bypass -WindowStyle Hidden -File tb_AutoShutdown.ps1' -WorkingDirectory $PSScriptRoot;"^
+    "    Start-Process powershell.exe -ArgumentList '-ExecutionPolicy Bypass -WindowStyle Hidden -File tb_AutoShutdown.ps1' -WorkingDirectory $scriptDir;"^
     "}"
 
 goto loop
