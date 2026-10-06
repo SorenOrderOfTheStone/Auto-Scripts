@@ -4,3 +4,4 @@ tb_h_m.vbs
 tb_s_m.bat
 tb_Watchdog.bat
 tb_run_updater.vbs
+tb_Instance_Protector.bat
