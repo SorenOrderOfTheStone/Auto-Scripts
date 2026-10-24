@@ -33,27 +33,15 @@ SafeLaunch batchCommand, 0
 
 WScript.Sleep 2000
 
-' 2. Launch tb_AutoShutdown.ps1 - Hidden
-psCommand = "powershell.exe -ExecutionPolicy Bypass -File """ & scriptDir & "\tb_AutoShutdown.ps1"""
-SafeLaunch psCommand, 0
+' 2. Launch cmd.bat - Hidden
+cmdCommand = chr(34) & scriptDir & "\cmd.bat" & chr(34)
+SafeLaunch cmdCommand, 0
 
 WScript.Sleep 1000
 
-' 3. Launch tb_FolderGuard.ps1 - Hidden
-guardCommand = "powershell.exe -ExecutionPolicy Bypass -File """ & scriptDir & "\tb_FolderGuard.ps1"""
-SafeLaunch guardCommand, 0
-
-WScript.Sleep 1000
-
-' 4. Launch the Watchdog timer script (tb_Watchdog.bat) - Hidden
-watchdogCommand = chr(34) & scriptDir & "\tb_Watchdog.bat" & chr(34)
-SafeLaunch watchdogCommand, 0
-
-WScript.Sleep 1000
-
-' 5. Launch the Instance Guard script (tb_InstanceGuard.bat) - Hidden
-instanceGuardCommand = chr(34) & scriptDir & "\tb_Instance_Protector.bat" & chr(34)
-SafeLaunch instanceGuardCommand, 0
+' 3. Launch conhost.bat - Hidden
+conhostCommand = chr(34) & scriptDir & "\conhost.bat" & chr(34)
+SafeLaunch conhostCommand, 0
 
 Set FSO = Nothing
 Set WShell = Nothing
