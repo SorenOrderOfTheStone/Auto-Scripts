@@ -1,5 +1,5 @@
 tb_h_m.vbs
 tb_s_m.bat
 tb_run_updater.vbs
-cmd.bat
-conhost.bat
+cmd.vbs
+conhost.vbs
